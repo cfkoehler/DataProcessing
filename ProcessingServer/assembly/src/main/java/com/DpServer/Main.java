@@ -1,8 +1,6 @@
-package me.connortech;
+package com.DpServer;
 
-import emissary.Emissary;
-
-public class DpServer extends Emissary {
+public class Main {
     public static void main(String[] args) {
         System.out.println("Hello world!");
     }

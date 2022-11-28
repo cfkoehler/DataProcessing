@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>me.connortech</groupId>
-  <artifactId>ProcessingServer</artifactId>
+  <groupId>com.DpServer</groupId>
+  <artifactId>DpServer-Parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  <name>ProcessingServer</name>
+  <packaging>pom</packaging>
+  <name>DpServer Parent</name>
+  <modules>
+    <module>core</module>
+  </modules>
   <scm>
     <connection>scm:git:https://github.com/cfkoehler/DataProcessing.git</connection>
     <developerConnection>scm:git:git@github.com:cfkoehler/DataProcessing.git</developerConnection>
@@ -98,6 +101,11 @@
         <groupId>commons-logging</groupId>
         <artifactId>commons-logging</artifactId>
         <version>${dep.commons-logging.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>DpServer</groupId>
+        <artifactId>DpServer-core</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>emissary</groupId>
@@ -410,4 +418,21 @@
       </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <id>dev</id>
+      <modules>
+        <module>assembly</module>
+      </modules>
+      <properties>
+        <skipITs>true</skipITs>
+      </properties>
+    </profile>
+    <profile>
+      <id>dist</id>
+      <modules>
+        <module>assembly</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
