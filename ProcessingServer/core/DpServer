@@ -161,5 +161,5 @@ if test -e "${SCRIPT_DIR}/pom.xml"; then
 else
   setup_from_distribution
 fi
-MAIN_CLASS=com.Dpserver.DpServer run $@
+MAIN_CLASS=com.DpServer.DpServer run $@
 cleanup
