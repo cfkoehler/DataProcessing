@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.DpServer</groupId>
-  <artifactId>DpServer-Parent</artifactId>
+  <groupId>DpServer</groupId>
+  <artifactId>DpServer-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>DpServer Parent</name>
+  <name>DpServer-parent</name>
   <modules>
     <module>core</module>
   </modules>
@@ -23,6 +23,7 @@
   </distributionManagement>
   <properties>
     <BUILD_TIMESTAMP>${maven.build.timestamp}</BUILD_TIMESTAMP>
+    <DpServer.parent.dir>${basedir}</DpServer.parent.dir>
     <dep.commons-codec.version>1.15</dep.commons-codec.version>
     <dep.commons-collections.version>4.4</dep.commons-collections.version>
     <dep.commons-compress.version>1.21</dep.commons-compress.version>
@@ -51,6 +52,11 @@
         <groupId>com.beust</groupId>
         <artifactId>jcommander</artifactId>
         <version>${dep.jcommander.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.DpServer</groupId>
+        <artifactId>DpServer-core</artifactId>
+        <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
@@ -237,6 +243,56 @@
     </repository>
   </repositories>
   <build>
+    <resources>
+      <resource>
+        <filtering>true</filtering>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.cfg</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${project.build.directory}/config</targetPath>
+        <filtering>false</filtering>
+        <directory>src/main/config</directory>
+      </resource>
+      <resource>
+        <!-- don't filter xml, properties or js files -->
+        <filtering>false</filtering>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>**/*.cfg</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <testResources>
+      <testResource>
+        <filtering>true</filtering>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*.cfg</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <!-- don't filter xml, properties, js or dat files -->
+        <filtering>false</filtering>
+        <directory>src/test/resources</directory>
+        <excludes>
+          <exclude>**/*.cfg</exclude>
+        </excludes>
+      </testResource>
+      <testResource>
+        <targetPath>${project.build.directory}/</targetPath>
+        <filtering>true</filtering>
+        <directory>src/test/</directory>
+        <includes>
+          <include>env.sh</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>${project.basedir}/src/main/resources/templates</directory>
+      </testResource>
+    </testResources>
     <pluginManagement>
       <plugins>
         <plugin>

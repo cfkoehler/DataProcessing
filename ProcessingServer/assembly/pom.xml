@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.DpServer</groupId>
-    <artifactId>DpServer-Parent</artifactId>
+    <groupId>DpServer</groupId>
+    <artifactId>DpServer-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>assembly</artifactId>
+  <artifactId>DpServer-assembly</artifactId>
   <packaging>pom</packaging>
-  <name>DpServer Assembly</name>
+  <name>DpServer-assembly</name>
   <properties>
     <DpServer.parent.dir>${project.parent.basedir}</DpServer.parent.dir>
     <maven.compiler.source>11</maven.compiler.source>
@@ -74,7 +74,7 @@
               <descriptors>
                 <descriptor>src/assembly/dist-assembly.xml</descriptor>
               </descriptors>
-              <finalName>burrito-${project.version}</finalName>
+              <finalName>DpServer-${project.version}</finalName>
             </configuration>
             <executions>
               <execution>

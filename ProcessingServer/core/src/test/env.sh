@@ -1,0 +1,6 @@
+CONFIG_DIR="${project.build.directory}/config"
+HOST="localhost"
+PORT="8001"
+OUTPUT_ROOT="${project.build.directory}/localoutput"
+PROJECT_BASE="${project.build.directory}"
+SCHEME="http"
