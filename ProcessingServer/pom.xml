@@ -14,13 +14,7 @@
     <developerConnection>scm:git:git@github.com:cfkoehler/DataProcessing.git</developerConnection>
     <url>https://https://github.com/cfkoehler/DataProcessing</url>
   </scm>
-  <distributionManagement>
-    <repository>
-      <id>emissary-releases</id>
-      <name>Emissary Releases</name>
-      <url>https://multipass.revelc.net/nexus/content/repositories/public</url>
-    </repository>
-  </distributionManagement>
+  <distributionManagement />
   <properties>
     <BUILD_TIMESTAMP>${maven.build.timestamp}</BUILD_TIMESTAMP>
     <DpServer.parent.dir>${basedir}</DpServer.parent.dir>
@@ -114,7 +108,7 @@
         <version>${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>emissary</groupId>
+        <groupId>gov.nsa</groupId>
         <artifactId>emissary</artifactId>
         <version>${dep.emissary.version}</version>
       </dependency>
@@ -227,21 +221,10 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>emissary</groupId>
+      <groupId>gov.nsa</groupId>
       <artifactId>emissary</artifactId>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <releases>
-        <enabled>true</enabled>
-      </releases>
-      <id>emissary-public</id>
-      <name>Emissary public</name>
-      <url>https://multipass.revelc.net/nexus/content/repositories/public</url>
-      <layout>default</layout>
-    </repository>
-  </repositories>
   <build>
     <resources>
       <resource>
