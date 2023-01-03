@@ -1,10 +1,23 @@
-.DS_Store
-target/
-# IDEs use a different build dir to reduce conflicts
-# when running maven on the commandline at the same time
-target-eclipse/
-target-netbeans/
-target-idea/
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
 
 # IDE stuff
 nbproject/
@@ -22,3 +35,6 @@ nbactions*.xml
 *.swp
 *.checkstyle
 .vscode/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
