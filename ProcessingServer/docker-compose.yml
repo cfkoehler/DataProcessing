@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  DpServer-worker-1:
+    image: dpserver
+    command: server -a 2 -m cluster -p 8001
+    ports:
+      - "8001:8001"
+    volumes:
+      - input:/opt/DpServer/target/data
+      - output-1:/opt/DpServer/localoutput
+
+volumes:
+  input:
+  output-1:
