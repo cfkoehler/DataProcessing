@@ -23,7 +23,7 @@ public class DpVersionCommand extends VersionCommand {
 
     @Override
     public void run(JCommander jc) {
-        LOG.info("Burrito version: {} ", new Version().toString());
+        LOG.info("DpServer version: {} ", new Version().toString());
     }
 
 }
