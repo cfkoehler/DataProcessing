@@ -1,0 +1,24 @@
+spring:
+  output:
+    ansi:
+      enabled: DETECT
+
+objects:
+  pickup:
+    inputBucket: ${PICKUP_BUCKET}
+    processingBucket: ${PROCESSING_BUCKET}
+    scanInterval: 60
+    maxObjectsPerScan: 2
+  queue:
+    name: objectMessagesQueue
+
+cloud:
+  aws:
+    region: ${AWS_REGION}
+
+logging:
+  pattern:
+    console: "%d %-5level %logger : %msg%n"
+  level:
+    root: INFO
+    DpFeeder.ProcessingFeeder.messaging.SqsMessageProducer: DEBUG
