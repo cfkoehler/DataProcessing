@@ -1,7 +1,8 @@
 package DpFeeder.ProcessingFeeder.config;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,20 +21,22 @@ public class AwsSQSConfiguration {
 
     @Value("${cloud.aws.region}")
     private String awsRegion;
-
+    @Value("${cloud.aws.accessKey}")
+    private String awsAccessKey;
+    @Value("${cloud.aws.secretKey}")
+    private String secretKey;
 
     @Bean
     @Primary
     public AmazonSQSAsync amazonSQSAsync() {
         return AmazonSQSAsyncClientBuilder.standard()
-                .withCredentials(credentialsProvider())
+                .withCredentials(new AWSStaticCredentialsProvider(credentials()))
                 .withRegion(awsRegion)
                 .build();
     }
 
-    @Bean
-    public AWSCredentialsProvider credentialsProvider() {
-        return new DefaultAWSCredentialsProviderChain();
+    public AWSCredentials credentials() {
+        return new BasicAWSCredentials(awsAccessKey, secretKey);
     }
 
     @Bean
