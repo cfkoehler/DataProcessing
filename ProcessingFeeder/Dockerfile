@@ -1,17 +1,11 @@
-FROM adoptopenjdk/openjdk11:alpine-jre
+FROM maven:3-amazoncorretto-11 AS MAVEN_BUILD
 
-# Refer to Maven build -> finalName
-ARG JAR_FILE=target/DpFeeder.jar
+COPY pom.xml /build/
+COPY src /build/src/
+WORKDIR /build/
+RUN mvn package
+FROM amazoncorretto:11-alpine3.18-jdk
+WORKDIR /app
+COPY --from=MAVEN_BUILD /build/target/DpFeeder.jar /app/app.jar
 
-# cd /opt/app
-WORKDIR /opt/app
-
-# cp target/DpFeeder.jar /opt/app/app.jar
-COPY ${JAR_FILE} app.jar
-
-# java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","app.jar"]
-
-## sudo docker run -p 8080:8080 -t docker-spring-boot:1.0
-## sudo docker run -p 80:8080 -t docker-spring-boot:1.0
-## sudo docker run -p 443:8443 -t docker-spring-boot:1.0
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

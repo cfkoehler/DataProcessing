@@ -7,14 +7,16 @@ objects:
   pickup:
     inputBucket: ${PICKUP_BUCKET}
     processingBucket: ${PROCESSING_BUCKET}
-    scanInterval: 60
+    scanInterval: 30000
     maxObjectsPerScan: 2
   queue:
-    name: objectMessagesQueue
+    name: ${QUEUE}
 
 cloud:
   aws:
     region: ${AWS_REGION}
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
 
 logging:
   pattern:

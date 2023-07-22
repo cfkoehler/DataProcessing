@@ -14,7 +14,7 @@ public class SqsMessageProducer {
 
     private final QueueMessagingTemplate queueMessagingTemplate;
 
-    @Value("${objects.queue.name")
+    @Value("${objects.queue.name}")
     private String objectsQueue;
 
     @Autowired

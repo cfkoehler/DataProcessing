@@ -71,6 +71,10 @@ public class S3FileScanner {
             // Get list of objects in Input Directory
             List<S3ObjectSummary> s3Objects = listObjects(sourceBucket, maxFetch);
 
+            if (s3Objects.isEmpty()) {
+                log.info("No objects found in input bucket");
+            }
+
             // For each object move to processing directory
             for (S3ObjectSummary objectSummary : s3Objects) {
                 log.info("Moving {} object to {} bucket", objectSummary.getKey(), processingBucket);
@@ -111,6 +115,7 @@ public class S3FileScanner {
         // Move to new bucket
         amazonS3().copyObject(sourceBucket, objectKey, targetBucket, newKey);
         // Delete from old bucket
+        //TODO: Only move if queue message is successful created
         amazonS3().deleteObject(sourceBucket, objectKey);
 
         return newKey;

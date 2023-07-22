@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Create Input, Processing, Loaded buckets for data processing
+
+Parameters:
+  InputBucketName:
+    Default: "dp-input"
+    Type: "String"
+  ProcessingBucketName:
+    Default: "dp-processing"
+    Type: "String"
+  LoadedBucketName:
+    Default: "dp-loaded"
+    Type: "String"
+Resources:        
+  InputBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref InputBucketName
+          - !Select 
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  ProcessingBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref ProcessingBucketName
+          - !Select 
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  LoadedBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref LoadedBucketName
+          - !Select 
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+Outputs:
+  InputBucketName:
+    Description: Name of the input bucket
+    Value: !Ref InputBucket
+  ProcessingBucketName:
+    Description: Name of the processing bucket
+    Value: !Ref ProcessingBucket
+  LoadedBucketName:
+    Description: Name of the processing bucket
+    Value: !Ref LoadedBucket
