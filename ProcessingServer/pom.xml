@@ -26,7 +26,7 @@
     <dep.commons-lang.version>2.6</dep.commons-lang.version>
     <dep.commons-logging.version>1.2</dep.commons-logging.version>
     <dep.commons-pool2.version>2.11.1</dep.commons-pool2.version>
-    <dep.emissary.version>7.10.0</dep.emissary.version>
+    <dep.emissary.version>8.0.0-M1</dep.emissary.version>
     <dep.guava.version>30.0-jre</dep.guava.version>
     <dep.httpclient.version>4.5.13</dep.httpclient.version>
     <dep.jackson.asl.version>1.9.13</dep.jackson.asl.version>
@@ -42,6 +42,18 @@
   </properties>
   <dependencyManagement>
     <dependencies>
+      <!--      TODO: Be more specific on what parts of the SDK to import-->
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk</artifactId>
+        <version>1.11.1000</version>
+        <exclusions>
+          <exclusion>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-simpleworkflow</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
       <dependency>
         <groupId>com.beust</groupId>
         <artifactId>jcommander</artifactId>
@@ -111,6 +123,12 @@
         <groupId>gov.nsa</groupId>
         <artifactId>emissary</artifactId>
         <version>${dep.emissary.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -220,6 +238,10 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk</artifactId>
+    </dependency>
     <dependency>
       <groupId>gov.nsa</groupId>
       <artifactId>emissary</artifactId>

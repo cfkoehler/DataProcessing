@@ -85,6 +85,7 @@ public class S3FileScanner {
                 objectPayload.setUuid(UUID.randomUUID());
                 objectPayload.setFeedingDate(new Date());
                 objectPayload.setObjectURL(newKey);
+                objectPayload.setObjectBucket(processingBucket);
                 Map<String, Object> headers = new HashMap<>();
                 headers.put("Content-Type", MediaType.APPLICATION_JSON_VALUE);
                 producer.send(objectPayload, headers);
@@ -115,9 +116,8 @@ public class S3FileScanner {
         // Move to new bucket
         amazonS3().copyObject(sourceBucket, objectKey, targetBucket, newKey);
         // Delete from old bucket
-        //TODO: Only move if queue message is successful created
+        // TODO: Only move if queue message is successful created
         amazonS3().deleteObject(sourceBucket, objectKey);
-
         return newKey;
     }
 

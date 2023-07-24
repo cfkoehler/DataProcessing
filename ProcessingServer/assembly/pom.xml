@@ -21,8 +21,9 @@
       <artifactId>DpServer-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>emissary</groupId>
+      <groupId>gov.nsa</groupId>
       <artifactId>emissary</artifactId>
+      <version>${dep.emissary.version}</version>
     </dependency>
   </dependencies>
   <profiles>

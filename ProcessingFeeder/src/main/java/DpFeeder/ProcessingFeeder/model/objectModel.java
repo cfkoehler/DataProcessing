@@ -10,4 +10,5 @@ public class objectModel {
     private UUID uuid;
     private Date feedingDate;
     private String ObjectURL;
+    private String ObjectBucket;
 }

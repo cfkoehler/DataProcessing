@@ -1,10 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: "Create SQS Queue with cloudwatch alarms"
 Parameters: 
-  AlarmEmailParam: 
-    Default: "connor@connortech.me"
-    Description: "Email address to notify of sqs issues"
-    Type: "String"
   QueueNameParam:
     Default: "SQS-QUEUE"
     Description: "Name of the SQS Queue to create"
@@ -15,38 +11,6 @@ Resources:
     Properties: 
       QueueName:
         Ref: "QueueNameParam"
-  AlarmTopic: 
-    Type: AWS::SNS::Topic
-    Properties: 
-      Subscription: 
-        - 
-          Endpoint: 
-            Ref: "AlarmEmailParam"
-          Protocol: "email"
-  QueueDepthAlarm: 
-    Type: AWS::CloudWatch::Alarm
-    Properties: 
-      AlarmDescription: "Alarm if queue depth increases to more than 10 messages"
-      Namespace: "AWS/SQS"
-      MetricName: "ApproximateNumberOfMessagesVisible"
-      Dimensions: 
-        - 
-          Name: "QueueName"
-          Value: 
-            Fn::GetAtt: 
-              - "SQSQueue"
-              - "QueueName"
-      Statistic: "Sum"
-      Period: "300"
-      EvaluationPeriods: "1"
-      Threshold: "10"
-      ComparisonOperator: "GreaterThanThreshold"
-      AlarmActions: 
-        - 
-          Ref: "AlarmTopic"
-      InsufficientDataActions: 
-        - 
-          Ref: "AlarmTopic"
 Outputs: 
   QueueURL: 
     Description: "URL of new Amazon SQS Queue"
