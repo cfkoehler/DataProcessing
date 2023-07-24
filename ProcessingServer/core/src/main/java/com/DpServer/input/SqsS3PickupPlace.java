@@ -49,13 +49,13 @@ public class SqsS3PickupPlace extends PickUpPlace implements IPickUp {
 
     public boolean processDataPayload(byte[] payload , SqsMessage sqsMessage) {
         IBaseDataObject dataObject = DataObjectFactory.getInstance(payload, sqsMessage.getUuid());
-        dataObject.setParameter("OBJECT_URL", sqsMessage.getObjectURL());
-        dataObject.setParameter("OBJECT_BUCKET", sqsMessage.getObjectBucket());
         dataObject.setParameter("FEEDING_DATE", sqsMessage.getFeedingDate());
+        dataObject.setParameter("ORIGINAL_FILENAME", sqsMessage.getOriginalFilename());
         dataObject.putParameter("SERVER_INPUT_DATE", emissary.util.TimeUtil.getDateAsISO8601(new Date().getTime()));
+        String s3URL = "https://" + sqsMessage.getObjectBucket() + "s3.amazonaws.com/" + sqsMessage.getObjectURL();
+        dataObject.setParameter("OBJECT_URI", s3URL);
 
-
-        // TODO: this can be configurable
+        // TODO: make this configurable
         dataObject.setCurrentForm("UNKNOWN");
 
         try {

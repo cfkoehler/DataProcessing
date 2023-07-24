@@ -16,12 +16,12 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "uuid",
         "feedingDate",
         "objectURL",
-        "objectBucket"
+        "objectBucket",
+        "originalFilename"
 })
 @Generated("jsonschema2pojo")
 public class SqsMessage implements Serializable
 {
-
     @JsonProperty("uuid")
     private String uuid;
     @JsonProperty("feedingDate")
@@ -30,6 +30,8 @@ public class SqsMessage implements Serializable
     private String objectURL;
     @JsonProperty("objectBucket")
     private String objectBucket;
+    @JsonProperty("originalFilename")
+    private String originalFilename;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
     private final static long serialVersionUID = -2612033473699888864L;
@@ -47,12 +49,13 @@ public class SqsMessage implements Serializable
      * @param uuid
      * @param feedingDate
      */
-    public SqsMessage(String uuid, Long feedingDate, String objectURL, String objectBucket) {
+    public SqsMessage(String uuid, Long feedingDate, String objectURL, String objectBucket, String originalFilename) {
         super();
         this.uuid = uuid;
         this.feedingDate = feedingDate;
         this.objectURL = objectURL;
         this.objectBucket = objectBucket;
+        this.originalFilename = originalFilename;
     }
 
     @JsonProperty("uuid")
@@ -93,6 +96,16 @@ public class SqsMessage implements Serializable
     @JsonProperty("objectBucket")
     public void setObjectBucket(String objectBucket) {
         this.objectBucket = objectBucket;
+    }
+
+    @JsonProperty("originalFilename")
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    @JsonProperty("originalFilename")
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
     }
 
     @JsonAnyGetter
