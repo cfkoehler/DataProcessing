@@ -32,7 +32,6 @@ import java.util.*;
 public class S3FileScanner {
 
     private final SqsMessageProducer producer;
-
     @Value("${objects.pickup.inputBucket}")
     private String sourceBucket;
     @Value("${objects.pickup.processingBucket}")
@@ -78,12 +77,14 @@ public class S3FileScanner {
             // For each object move to processing directory
             for (S3ObjectSummary objectSummary : s3Objects) {
                 log.info("Moving {} object to {} bucket", objectSummary.getKey(), processingBucket);
-                String newKey = moveObject(sourceBucket, processingBucket, objectSummary.getKey());
+                UUID objectUUID = UUID.randomUUID();
+                String newKey = moveObject(sourceBucket, processingBucket, objectSummary.getKey(), objectUUID);
 
                 // Create message for the object
                 objectModel objectPayload = new objectModel();
                 objectPayload.setUuid(UUID.randomUUID());
                 objectPayload.setFeedingDate(new Date());
+                objectPayload.setOriginalFilename(objectSummary.getKey());
                 objectPayload.setObjectURL(newKey);
                 objectPayload.setObjectBucket(processingBucket);
                 Map<String, Object> headers = new HashMap<>();
@@ -106,12 +107,13 @@ public class S3FileScanner {
         return objectListing.getObjectSummaries();
     }
 
-    public String moveObject(String sourceBucket, String targetBucket, String objectKey) {
+    public String moveObject(String sourceBucket, String targetBucket, String objectKey, UUID objectUUID) {
         // Create object key name with timestamp directory prefix
         // year/month/day/hour UTC time
         LocalDateTime now = LocalDateTime.now(ZoneOffset.UTC);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd/HH");
-        String newKey = now.format(formatter) + objectKey;
+        // Change key to UUID for easier management
+        String newKey = now.format(formatter) + objectUUID.toString();
 
         // Move to new bucket
         amazonS3().copyObject(sourceBucket, objectKey, targetBucket, newKey);

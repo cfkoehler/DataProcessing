@@ -9,6 +9,7 @@ import java.util.UUID;
 public class objectModel {
     private UUID uuid;
     private Date feedingDate;
-    private String ObjectURL;
-    private String ObjectBucket;
+    private String objectURL;
+    private String objectBucket;
+    private String originalFilename;
 }
