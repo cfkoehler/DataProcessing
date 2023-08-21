@@ -1,0 +1,38 @@
+service: dp-query
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:  
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+          Resource: "arn:aws:dynamodb:us-east-1:725903221633:table/dp-MetadataIndex"
+        - Effect: "Allow"
+          Action:
+            - "s3:GetObject"
+          Resource: arn:aws:s3:::{dp-loaded-2c80ad60/*
+
+
+functions:
+  listAllObjects: 
+    handler: listAllObjectsHandler.listObjects
+    events:
+      - http:
+          path: listAll
+          method: GET
+  getObject:
+    handler: getObject.getObject
+    events:
+      - http:
+          path: getObject/{objectID}
+          method: GET
+
+
