@@ -44,6 +44,7 @@ public class SqsS3PickupPlace extends PickUpPlace implements IPickUp {
         awsRegion = configG.findStringEntry("AWS_REGION");
         loadedBucket = configG.findStringEntry("s3_LOADED_BUCKET");
         awsCredentials=credentials();
+        logger.info("SQS pickup configured for queue: {} in region {}", sqsUrl, awsRegion);
         startDataServer();
     }
 
