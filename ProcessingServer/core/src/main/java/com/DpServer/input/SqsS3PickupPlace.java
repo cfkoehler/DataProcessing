@@ -49,14 +49,15 @@ public class SqsS3PickupPlace extends PickUpPlace implements IPickUp {
 
     public boolean processDataPayload(byte[] payload , SqsMessage sqsMessage) {
         IBaseDataObject dataObject = DataObjectFactory.getInstance(payload, sqsMessage.getUuid());
-        dataObject.setParameter("FEEDING_DATE", sqsMessage.getFeedingDate());
-        dataObject.setParameter("ORIGINAL_FILENAME", sqsMessage.getOriginalFilename());
-        dataObject.putParameter("SERVER_INPUT_DATE", emissary.util.TimeUtil.getDateAsISO8601(new Date().getTime()));
+        dataObject.setParameter("feedingDateTime", sqsMessage.getFeedingDate());
+        dataObject.setParameter("originalFilename", sqsMessage.getOriginalFilename());
+        dataObject.putParameter("processingDateTime", emissary.util.TimeUtil.getDateAsISO8601(new Date().getTime()));
+        dataObject.putParameter("objectID", sqsMessage.getUuid());
         String s3URL = "https://" + sqsMessage.getObjectBucket() + "s3.amazonaws.com/" + sqsMessage.getObjectURL();
-        dataObject.setParameter("OBJECT_URI", s3URL);
+        dataObject.setParameter("objectURI", s3URL);
 
-        // TODO: make this configurable
         dataObject.setCurrentForm("UNKNOWN");
+        dataObject.setFileType("UNKNOWN");
 
         try {
             logger.info("**Deploying an agent for id: {}, object key: {}, forms: {}", dataObject.getInternalId(), sqsMessage.getObjectURL(), dataObject.getAllCurrentForms());

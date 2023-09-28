@@ -8,8 +8,7 @@ module.exports.listObjects = (event, context, callback) => {
     const params = {
         TableName,
         Select: 'SPECIFIC_ATTRIBUTES',
-        AttributesToGet: ['objectID', 'objectURI', 'processingDateTime', 'FILETYPE'],
-        Limit: 50
+        AttributesToGet: ['objectID', 'objectURI', 'processingDateTime', 'FILETYPE']
     };
     db.scan(params, (error, result) => {
         if (error) {

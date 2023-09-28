@@ -1,7 +1,7 @@
 'use strict'
 
 const AWS = require('aws-sdk')
-const db = new AWS.DynamoDB.DocumentClient()
+const db = new AWS.DynamoDB
 const TableName = "dp-MetadataIndex"
 
 module.exports.getObject = (event, context, callback) => {
@@ -9,11 +9,10 @@ module.exports.getObject = (event, context, callback) => {
     console.info("Scanning for objectID: " + objectID)
     const params = {
         TableName,
-        Key: {
-            objectID: objectID
-        }
+        Key: {"objectID": objectID}
     };
-    db.scan(params, (error, result) => {
+    console.debug(params)
+    db.getItem(params, (error, result) => {
         if (error) {
             console.error(error)
             callback(null, {

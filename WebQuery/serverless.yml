@@ -29,7 +29,7 @@ functions:
           path: listAll
           method: GET
   getObject:
-    handler: getObject.getObject
+    handler: getObjectHandler.getObject
     events:
       - http:
           path: getObject/{objectID}

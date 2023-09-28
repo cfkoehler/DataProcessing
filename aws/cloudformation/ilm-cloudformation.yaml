@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Creating Required IAM Roles, Policies, and Users
+
+Parameters:
+  InputBucketName:
+    Default: "dp-input"
+    Type: "String"
+  ProcessingBucketName:
+    Default: "dp-processing"
+    Type: "String"
+  LoadedBucketName:
+    Default: "dp-loaded"
+    Type: "String"
+  DynamoDBTableName:
+    Default: "DynamoDbTable"
+    Type: "String"
+  SQSQueueName:
+    Default: "SQS-QUEUE"
+    Type: "String"
+
+Resources:
+  IngestRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: 
+                - ec2.amazonaws.com
+                - sqs.amazonaws.com
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: IngestRolePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: 
+                  - s3:ListBucket
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:DeleteObject
+                Resource: 
+                  - !Sub arn:aws:s3:::${InputBucketName}/*
+                  - !Sub arn:aws:s3:::${ProcessingBucketName}/*
+              - Effect: Allow
+                Action: 
+                  - s3:ListBucket
+                  - s3:PutObject
+                Resource: 
+                  - !Sub arn:aws:s3:::${LoadedBucketName}/*
+              - Effect: Allow
+                Action: 
+                  - sqs:SendMessage
+                  - sqs:DeleteMessage
+                  - sqs:ReceiveMessage
+                  - sqs:GetQueueAttributes
+                  - sqs:GetQueueUrl
+                Resource: 
+                  - !Sub arn:aws:sqs:::${SQSQueueName}
+              - Effect: Allow
+                Action: 
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                Resource: 
+                  - !Sub arn:aws:dynamodb:::${DynamoDBTableName}
