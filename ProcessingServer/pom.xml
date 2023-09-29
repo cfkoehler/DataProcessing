@@ -32,7 +32,7 @@
     <dep.jackson.asl.version>1.9.13</dep.jackson.asl.version>
     <dep.jackson.version>2.12.6</dep.jackson.version>
     <dep.jcommander.version>1.58</dep.jcommander.version>
-    <dep.jetty.version>9.4.48.v20220622</dep.jetty.version>
+    <dep.jetty.version>10.0.15</dep.jetty.version>
     <dep.slf4j.version>1.7.36</dep.slf4j.version>
     <maven.compiler.showWarnings>true</maven.compiler.showWarnings>
     <maven.compiler.source>11</maven.compiler.source>
