@@ -10,7 +10,7 @@ objects:
     scanInterval: 30000
     maxObjectsPerScan: 2
   queue:
-    name: ${QUEUE}
+    name: ${QUEUE_URL}
 
 cloud:
   aws:
