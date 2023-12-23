@@ -25,8 +25,6 @@ public class DynamoDBDropOffPlace extends ServiceProviderPlace implements EmptyF
     private String dynamodbTable;
     private String awsAccessKey;
     private String awsSecretKey;
-    private String awsRegion;
-    private AWSCredentials awsCredentials;
 
     private static AmazonDynamoDB dynamoDBClient;
 
@@ -44,8 +42,8 @@ public class DynamoDBDropOffPlace extends ServiceProviderPlace implements EmptyF
         dynamodbTable = configG.findStringEntry("DYNAMODB_TABLE_NAME");
         awsAccessKey = configG.findStringEntry("AWS_ACCESS_KEY");
         awsSecretKey = configG.findStringEntry("AWS_SECRET_KEY");
-        awsRegion = configG.findStringEntry("AWS_REGION");
-        awsCredentials=credentials();
+        String awsRegion = configG.findStringEntry("AWS_REGION");
+        AWSCredentials awsCredentials = credentials();
         dynamoDBClient = AmazonDynamoDBClientBuilder.standard()
                 .withRegion(awsRegion)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
