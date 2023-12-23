@@ -1,0 +1,186 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create AWS Resources for Data Ingest
+Parameters:
+  QueueNameParam:
+    Default: dp-queue
+    Description: Name of the SQS Queue to create
+    Type: String
+  InputBucketName:
+    Default: dp-input
+    Type: String
+  ProcessingBucketName:
+    Default: dp-processing
+    Type: String
+  LoadedBucketName:
+    Default: dp-loaded
+    Type: String
+Resources:
+  SQSQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Ref QueueNameParam
+  InputBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref InputBucketName
+          - !Select
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  ProcessingBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref ProcessingBucketName
+          - !Select
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  LoadedBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Join
+        - '-'
+        - - !Ref LoadedBucketName
+          - !Select
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+  MetadataIndexTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Join
+        - '-'
+        - - dp-MetadataIndex
+          - !Select
+            - 0
+            - !Split
+              - '-'
+              - !Select
+                - 2
+                - !Split
+                  - /
+                  - !Ref AWS::StackId
+      AttributeDefinitions:
+        - AttributeName: objectID
+          AttributeType: S
+        - AttributeName: processingDateTime
+          AttributeType: S
+      KeySchema:
+        - AttributeName: objectID
+          KeyType: HASH
+        - AttributeName: processingDateTime
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  DynamoDBReadonlyRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: DynamoDBReadonlyRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: DynamoDBReadonlyPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:DescribeTable
+                  - dynamodb:GetItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                Resource: !GetAtt MetadataIndexTable.Arn
+Outputs:
+  QueueURL:
+    Description: URL of new Amazon SQS Queue
+    Value: !Ref SQSQueue
+  QueueARN:
+    Description: ARN of new AmazonSQS Queue
+    Value: !GetAtt SQSQueue.Arn
+  QueueName:
+    Description: Name of new Amazon SQS Queue
+    Value: !GetAtt SQSQueue.QueueName
+  InputBucketName:
+    Description: Name of the input bucket
+    Value: !Ref InputBucket
+  ProcessingBucketName:
+    Description: Name of the processing bucket
+    Value: !Ref ProcessingBucket
+  LoadedBucketName:
+    Description: Name of the loaded bucket
+    Value: !Ref LoadedBucket
+  MetadataIndexTableName:
+    Description: Name of the Metadata DynamoDb Table
+    Value: !Ref MetadataIndexTable
+Metadata:
+  AWS::Composer::Groups:
+Outputs:
+  QueueURL:
+    Description: URL of new Amazon SQS Queue
+    Value: !Ref SQSQueue
+  QueueARN:
+    Description: ARN of new AmazonSQS Queue
+    Value: !GetAtt SQSQueue.Arn
+  QueueName:
+    Description: Name of new Amazon SQS Queue
+    Value: !GetAtt SQSQueue.QueueName
+  InputBucketName:
+    Description: Name of the input bucket
+    Value: !Ref InputBucket
+  ProcessingBucketName:
+    Description: Name of the processing bucket
+    Value: !Ref ProcessingBucket
+  LoadedBucketName:
+    Description: Name of the loaded bucket
+    Value: !Ref LoadedBucket
+  MetadataIndexTableName:
+    Description: Name of the Metadata DynamoDb Table
+    Value: !Ref MetadataIndexTable
+Metadata:
+  AWS::Composer::Groups:
+    Group:
+      Label: S3 Buckets
+      Members:
+        - ProcessingBucket
+        - LoadedBucket
+        - InputBucket
